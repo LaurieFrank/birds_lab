@@ -4,16 +4,22 @@
 			<h2>{{ sighting.species }}</h2>
 			<p>{{ sighting.location }} on {{ sighting.date|format }}</p>
 
-			<button>Delete Sighting</button>
+			<button type="button" class="delete-btn" v-on:click="deleteSighting(sighting._id)">Delete Sighting</button>
 		</div>
 	</div>
 </template>
 
 <script>
 import { eventBus } from '../main';
-import SightingService from "@/services/SightinService.js"
+import SightingService from "@/services/SightingService.js";
+
 
 export default {
+	data(){
+		return {
+			sighting: null
+		}
+	},
 	name: "sightings-grid",
 	props: ["sightings"],
 	filters: {
@@ -21,10 +27,22 @@ export default {
 			return new Date(value).toLocaleString().substring(0, 10);
 		}
 	},
-	methods: {
-
-	}
+	methods:{
+		deleteSighting(id){
+			console.log("id?", id);
+			SightingService.deleteSighting(id)
+			.then(() => eventBus.$emit('sighting-deleted', id))
+		}
 }
+}
+  // mounted(){
+	// 	eventBus.$on('sighting-deleted', (id) => {
+	// 		let index = this.sightings.findIndex(sighting => sighting._id === id)
+	// 		this.sightings.splice(index, 1)
+	// 	})
+	// }
+
+
 </script>
 
 <style lang="css" scoped>

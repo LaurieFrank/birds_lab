@@ -24,12 +24,30 @@ export default {
   },
   mounted(){
     this.fetchData();
-  },
+
+    eventBus.$on('sighting-added', (sighting) => {
+			this.sightings.push(sighting)
+      console.log(this.sightings);
+		})
+
+    	eventBus.$on('sighting-deleted', (id) => {
+    		let index = this.sightings.findIndex(sighting => sighting._id === id)
+    		this.sightings.splice(index, 1)
+    	})
+    },
+
+
   methods: {
     fetchData(){
       SightingService.getSightings()
       .then(sightings => this.sightings = sightings);
-    }
+    },
+
+    // deleteSighting(){
+    //   SightingService.deleteSighting(this.sighting._id)
+    //   .then(() => eventBus.$emit('sighting-deleted', this.sighting._id))
+    // }
+
   }
 }
 </script>

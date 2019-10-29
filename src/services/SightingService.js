@@ -10,8 +10,13 @@ export default {
     return fetch(baseURL, {
       method: 'POST',
       body: JSON.stringify(payload),
-      headers: {'Content-Type': 'application.json'}
+      headers: {'Content-Type': 'application/json'}
     })
     .then(res => res.json())
+  },
+  deleteSighting(id){
+    return fetch(baseURL + id, {
+      method: 'DELETE'
+    })
   }
 }
